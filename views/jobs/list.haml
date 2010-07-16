@@ -1,0 +1,25 @@
+%h2 #{@function_name}
+
+%table{:class => "joblist"}
+  %thead
+    %colgroup
+      %col{:width => '100px'}
+      %col{:width => '150px'}
+      %col{:width => '200px'}
+      %col{:width => ''}
+    %tr
+      %th ID
+      %th Function
+      %th Queue time
+      %th Data preview
+  %tbody
+  - @jobs.each do |j|
+    %tr 
+      %td
+        %a{:title => "#{j.unique_key}", :href => "/jobs/show/#{j.unique_key}"} #{j.unique_key[0,10]}...
+      %td
+        #{j.function_name} 
+      %td
+        #{Time.at(j.when_to_run).strftime("%B %d %Y %H:%M:%S %p")} 
+      %td
+        #{j.data[0,50]}

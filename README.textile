@@ -1,0 +1,19 @@
+h2. About
+
+
+This is a quick-and-dirty app thrown together with Sinatra and ActiveRecord to view / edit a SQLite3 Gearman job queue. 
+
+
+h2. Requirements
+
+* Ruby >= 1.8
+* Sinatra
+** sinatra/reloader 
+** sinatra/static_assets
+* ActiveRecord
+* less
+* haml
+
+h2. To run
+
+Simply edit manager.rb and point it at your GM SQLite3 DB, and then run manager.rb. Sinatra will take care of the rest!

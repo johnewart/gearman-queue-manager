@@ -1,0 +1,4 @@
+%ul
+- @job_types.each do |jt|
+  %li 
+    %a{:title => "#{jt.function_name}", :href => "/jobs/#{jt.function_name}"} #{jt.function_name}
