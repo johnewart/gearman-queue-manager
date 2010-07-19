@@ -1,17 +1,17 @@
 %h2 #{@job.unique_key}
 
-%form{:name => "job", :id => "job", :action => "/jobs/update/#{@job.unique_key}", :method => "post" }
-  %fieldset
-    %label{:for => "job[function_name]"} Function Name:
-    %input{:type => "text", :name => "job[function_name]", :class => "text", :value => @job.function_name}
-    %p
-    %label{:for => "job[priority]"} Priority:
-    %input{:type => "text", :name => "job[priority]", :class => "text", :value => @job.priority}
-    %p
-    %label{:for => "job[when_to_run]"} Scheduled to run:
-    %input{:type => "text", :name => "job[when_to_run]", :class => "text", :value => @job.when_to_run }
-    %p
-    %label{:for => "job[data]"} Data:
-    %textarea{:name => "job[data]", :rows => 10, :cols => 50} #{@job.data}
-    %p
-    %input{:type => "submit", :value => "Update", :class => "button"}
+%p
+  %a{:title => "Edit", :href => "/jobs/edit/#{@job.unique_key}"} Edit Job
+
+%label Function Name:
+%div{:class => "meta"}#{@job.function_name}
+%p
+%label Priority:
+%div{:class => "meta"}#{@job.priority}
+%p
+%label Scheduled to run:
+%div{:class => 'meta'}#{@job.when_to_run}
+%p
+%label Data:
+%div{:class => 'meta'}
+  %pre{:class => "jobdata"} #{@job.data}

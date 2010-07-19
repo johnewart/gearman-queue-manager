@@ -18,6 +18,8 @@ helpers do
   end
 end
 
+set :public, File.dirname(__FILE__) + '/static'
+
 ActiveRecord::Base.establish_connection(
   :adapter => 'sqlite3',
   :dbfile =>  'gearman.sqlite3.db'
@@ -27,7 +29,7 @@ ActiveRecord::Base.establish_connection(
 class Job < ActiveRecord::Base
   self.table_name = "gearman_queue"
   set_primary_key :unique_key
-  named_scope :unique_functions, :group => "function_name"
+  named_scope :unique_functions, :select => "function_name, COUNT(*) AS count", :group => "function_name"
 end
 
 # Methods
@@ -41,11 +43,9 @@ get '/css/stylesheet.css' do
    less :stylesheet
 end
 
-
 #Jobs
 get '/jobs' do
   @job_types = Job.unique_functions
-  @jobs = Job.all
   haml :'jobs/index'
 end
 
@@ -87,6 +87,18 @@ get '/jobs/show/:id' do
   haml :'jobs/show'
 end
 
+get '/jobs/edit/:id' do
+  @job = Job.find(params[:id])
+  @jobtimestr = Time.at(@job.when_to_run).strftime('%B %d, %Y @ %H:%M:%S %p')
+  @priorities = {
+    0 => 'High',
+    1 => 'Normal', 
+    2 => 'Low',
+  }
+  haml :'jobs/edit'
+end
+
+
 __END__
 
 @@ layout
@@ -96,6 +108,10 @@ __END__
     %meta{"http-equiv"=>"Content-Type", 
        :content=>"text/html; charset=utf-8"}/
     = stylesheet_link_tag '/css/stylesheet.css'
-
   %h1 Gearman manager
+  %div{:id => "menu"}
+    %ul 
+      %li 
+        %a{:title => "Job Queues", :href => "/jobs"} Job Queues
+        
   = yield
